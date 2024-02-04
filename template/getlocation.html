@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Coordinates</title>
+    {% csrf_token %}
+</head>
+<body>
+
+<h1>Device Coordinates</h1>
+<p id="coordinates"></p>
+
+<button onclick="sendLocationRequest()">Check Attendance</button>
+
+<script>
+function sendLocationRequest() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // Display coordinates on the webpage
+            document.getElementById("coordinates").innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+
+            // Send coordinates to Django view using AJAX
+            sendDataToDjango(latitude, longitude);
+        }, function(error) {
+            console.error("Error getting location:", error.message);
+            document.getElementById("coordinates").innerHTML = "Error getting location.";
+        });
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+        document.getElementById("coordinates").innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function sendDataToDjango(latitude, longitude) {
+    var xhr = new XMLHttpRequest();
+    var url = "/location/";  // Replace with your actual Django view URL
+    var params = "latitude=" + latitude + "&longitude=" + longitude;
+
+    xhr.open("POST", url, true);
+
+    // Include CSRF token in the request headers
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                // Parse the JSON response
+                var response = JSON.parse(xhr.responseText);
+
+                // Display the attendance mark comment on the webpage
+                alert(response.message);
+            } else {
+                console.error("Error sending location. Status:", xhr.status);
+                alert("Error sending location.");
+            }
+        }
+    };
+
+    xhr.send(params);
+}
+
+// Helper function to get CSRF token from cookies
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+</body>
+</html>

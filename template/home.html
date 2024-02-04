@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <div id="reader" style="width: 600px; height: 600px;"></div>
+        
+        <form id="form_isbn" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+        
+        <script>
+            function onScanSuccess(decodedText, decodedResult) {
+                // handle the scanned code as you like, for example:
+                console.log(`Code matched = ${decodedText}`, decodedResult);
+                document.getElementById('id_isbn').value = decodedText;
+                document.getElementById('form_isbn').submit();
+            }
+
+            function onScanFailure(error) {
+                // handle scan failure, usually better to ignore and keep scanning.
+                // for example:
+                console.warn(`Code scan error = ${error}`);
+            }
+
+            let html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader",
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                /* verbose= */ false
+            );
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        </script>
+
+        <h1>Home {{ request.user }}</h1>
+        <a href="signout">Logout</a>
+    {% else %}
+        <h1>Home</h1>
+    {% endif %}
+</body>
+</html>

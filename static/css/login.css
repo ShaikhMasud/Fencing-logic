@@ -1,0 +1,92 @@
+/* YourAppName/static/css/styles.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica', sans-serif;
+    background: url('dylan-gillis-KdeqA3aTnBY-unsplash.jpg') center/cover no-repeat;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: left;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.171);
+}
+
+/* Improved button styling */
+button:active {
+    background-color: #004080; /* Darker color when button is pressed */
+    transition: background-color 0.1s ease;
+}
+
+h3{
+    color: black;
+}
+
+.signup-button {
+    margin-top: 15px;
+    text-align: center; /* Center the signup button */
+}
+
+.signup-button a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.signup-button a:hover {
+    background-color:rgba(0, 0, 0, 0.171);
+}
+
+label{
+    color: black;
+}
